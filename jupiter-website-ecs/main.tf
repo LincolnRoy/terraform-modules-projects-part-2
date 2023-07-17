@@ -4,7 +4,7 @@ provider "aws" {
   profile = "student-user"
 }
 
-#vreate VPC
+# Create VPC
 module "vpc" {
   source                       = "../modules/VPC"
   region                       = var.region
@@ -17,3 +17,18 @@ module "vpc" {
   private_data_subnet_az1_cidr = var.private_data_subnet_az1_cidr
   private_data_subnet_az2_cidr = var.private_data_subnet_az2_cidr
 }
+
+# Create NATGW
+module "nat_gateway" {
+  source                     = "../modules/NAT-GW"
+  project_name               = module.vpc.project_name
+  vpc_id                     = module.vpc.vpc_id
+  public_subnet_az1_id       = module.vpc.public_subnet_az1_id
+  public_subnet_az2_id       = module.vpc.public_subnet_az2_id
+  internet_gateway           = module.vpc.internet_gateway
+  private_app_subnet_az1_id  = module.vpc.private_app_subnet_az1_id
+  private_app_subnet_az2_id  = module.vpc.private_app_subnet_az2_id
+  private_data_subnet_az1_id = module.vpc.private_data_subnet_az1_id
+  private_data_subnet_az2_id = module.vpc.private_data_subnet_az2_id
+
+} 
