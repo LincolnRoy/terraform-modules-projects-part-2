@@ -14,3 +14,9 @@ variable "private_data_subnet_az2_cidr" {}
 # ACM variables
 variable "domain_name" {}
 variable "sub_domain_name" {}
+
+# ECS variables
+variable "container_image" {}
+
+# R53 variables
+variable "record_name" {}
