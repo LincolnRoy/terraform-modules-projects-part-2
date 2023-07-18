@@ -45,3 +45,21 @@ module "ecs_tasks_execution_role" {
   source       = "../modules/ECS-TASK-EX-ROLE"
   project_name = module.vpc.project_name
 }
+
+# Create ACM Variables
+module "acm" {
+  source          = "../modules/ACM"
+  domain_name     = var.domain_name
+  sub_domain_name = var.sub_domain_name
+}
+
+# Create ALB 
+module "application_load_balancer" {
+  source                = "../modules/ALB"
+  project_name          = module.vpc.project_name
+  alb_security_group_id = module.security_groups.alb_security_group_id
+  public_subnet_az1_id  = module.vpc.public_subnet_az1_id
+  public_subnet_az2_id  = module.vpc.public_subnet_az2_id
+  vpc_id                = module.vpc.vpc_id
+  certificate_arn       = module.acm.certificate_arn
+}
